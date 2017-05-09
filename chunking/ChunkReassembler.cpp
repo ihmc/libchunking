@@ -27,10 +27,6 @@
 #include "BufferReader.h"
 #include "Logger.h"
 #include "BMPImage.h"
-#ifdef WIN32
-    #include "FFmpegHandler.h"
-    #include "FFMPEGReader.h"
-#endif
 #include "VideoCodec.h"
 
 using namespace IHMC_MISC;
@@ -142,64 +138,6 @@ namespace IHMC_MISC
         return 0;
     }
 
-    #ifdef WIN32
-    int incorporateVideo (FFmpegReassembler *pFFMPEGReassembler, const void *pBuf, uint32 ui32BufLen, uint8 ui8ChunkId)
-    {
-        FFMPEGReader *pReader = new FFMPEGReader();
-        if (pReader == NULL) {
-            return -2;
-        }
-        if (pReader->read (pBuf, ui32BufLen) < 0) {
-            delete pReader;
-            return -3;
-        }
-        if (pFFMPEGReassembler->incorporateChunk (pReader, ui8ChunkId) < 0) {
-            return -4;
-        }
-        return 0;
-    }
-
-    int incorporateVideo (FFmpegReassembler *pFFMPEGReassembler, Chunker::Interval **ppIntervals, const void *pBuf, uint32 ui32BufLen)
-    {
-        const char *pszMethodName = "ChunkReassembler::incorporateVideo (2)";
-        if (!checkAndLogReassembler (pFFMPEGReassembler, ChunkReassembler::Image)) {
-            return -1;
-        }
-
-        int64 i642StartX = 0U;
-        int64 i64EndX = 0U;
-        for (uint8 i = 0; ppIntervals[i] != NULL; i++) {
-            switch (ppIntervals[i]->dimension) {
-                case Chunker::T:
-                    i642StartX = ppIntervals[i]->uiStart;
-                    i64EndX = ppIntervals[i]->uiEnd;
-                    break;
-
-                default:
-                    checkAndLogMsg (pszMethodName, Logger::L_MildError,
-                                    "unsupported dimension %d\n", (int) ppIntervals[i]->dimension);
-                    return -3;
-            }
-        }
-
-        FFMPEGReader *pReader = new FFMPEGReader();
-        if (pReader == NULL) {
-            return -5;
-        }
-        if (pReader->read (pBuf, ui32BufLen) < 0) {
-            delete pReader;
-            return -6;
-        }
-
-        int rc = pFFMPEGReassembler->incorporateChunk (pReader, i642StartX, i64EndX);
-        if (0 != rc) {
-            checkAndLogMsg (pszMethodName, Logger::L_MildError, "failed to incorporate annotation; rc = %d\n", rc);
-            return -4;
-        }
-        return 0;
-    }
-    #endif
-
     BufferReader * getReassembledImage (BMPReassembler *pBMPReassembler, Chunker::Type outputType, uint8 ui8CompressionQuality, bool bAnnotated)
     {
         const char *pszMethodName = "ChunkReassembler::getReassembledImage";
@@ -225,7 +163,7 @@ ChunkReassembler::ChunkReassembler (void)
     : _type (UNSUPPORTED),
       _ui8NoOfChunks (0),
       _pBMPReassembler (NULL),
-      _pFFMPEGReassembler (NULL)
+      _pMpeg1Reassembler (NULL)
 {
 }
 
@@ -265,19 +203,7 @@ int ChunkReassembler::init (Type reassemblerType, uint8 ui8NoOfChunks)
             _ui8NoOfChunks = ui8NoOfChunks;
         }
         else {
-#ifdef WIN32
-            int rc;
-            _pFFMPEGReassembler = new FFmpegReassembler();
-            if (0 != (rc = _pFFMPEGReassembler->init (ui8NoOfChunks))) {
-                checkAndLogMsg ("ChunkReassembler::init", Logger::L_MildError,
-                    "failed to initialize FFmpegReassembler; rc = %d\n", rc);
-                return -3;
-            }
-            _type = reassemblerType;
-            _ui8NoOfChunks = ui8NoOfChunks;
-#else
             return -3;
-#endif
         }
     }
     else {
@@ -301,9 +227,6 @@ int ChunkReassembler::incorporateChunk (const void *pBuf, uint32 ui32BufLen, Chu
         if (chunkType == Chunker::V_MPEG) {
             return (incorporateVideo (_pMpeg1Reassembler, pBuf, ui32BufLen, ui8ChunkId) < 0 ? -3 : 0);
         }
-        #ifdef WIN32
-        return (incorporateVideo (_pFFMPEGReassembler, pBuf, ui32BufLen, ui8ChunkId) < 0 ? -3 : 0);
-        #endif
     }
     checkAndLogMsg (pszMethodName, unsupportedType (chunkType));
     return -4;
@@ -322,9 +245,6 @@ int ChunkReassembler::incorporateAnnotation (Chunker::Interval **ppIntervals, co
         return ((incorporateImage (_pBMPReassembler, ppIntervals, pBuf, ui32BufLen, chunkType) < 0) ? -2 : 0);
     }
     if (VideoCodec::supports (chunkType)) {
-        #ifdef WIN32
-        return (incorporateVideo (_pFFMPEGReassembler, ppIntervals, pBuf, ui32BufLen) < 0 ? -3 : 0);
-        #endif
     }
 
     checkAndLogMsg (pszMethodName, unsupportedType (chunkType));
@@ -342,11 +262,6 @@ BufferReader * ChunkReassembler::getReassembledObject (Chunker::Type outputType,
                 return _pMpeg1Reassembler->getReassembledVideo();
             }
         }
-#ifdef WIN32
-        else if (_pFFMPEGReassembler != NULL) {
-            return _pFFMPEGReassembler->getReassembledVideo();
-        }
-#endif
     }
     checkAndLogMsg ("ChunkReassembler::getAnnotatedObject", unsupportedType (outputType));
     return NULL;
@@ -358,11 +273,6 @@ NOMADSUtil::BufferReader * ChunkReassembler::getAnnotatedObject (Chunker::Type o
         return getReassembledImage (_pBMPReassembler, outputType, ui8CompressionQuality, true);
     }
     if (VideoCodec::supports (outputType)) {
-        #ifdef WIN32
-        if (_pFFMPEGReassembler != NULL) {
-            return _pFFMPEGReassembler->getAnnotatedVideo();
-        }
-        #endif
     }
     checkAndLogMsg ("ChunkReassembler::getAnnotatedObject", unsupportedType (outputType));
     return NULL;

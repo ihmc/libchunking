@@ -61,7 +61,6 @@ namespace IHMC_MISC
             uint8 _ui8NoOfChunks;
             BMPReassembler *_pBMPReassembler;
             MPEG1Reassembler *_pMpeg1Reassembler;
-            FFmpegReassembler *_pFFMPEGReassembler;
     };
 }
 

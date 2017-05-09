@@ -356,7 +356,7 @@ namespace IHMC_MISC_TEST
 
         // Annotation blank image
         Chunker::Fragment *pFragment = pFragments->getFirst();
-        const Chunker::Type outType = pFragment->out_type;
+        const String outType (pFragment->out_type);
         ChunkReassembler reassembler;
         if (reassembler.init (reassemblerType, pFragment->ui8TotParts) < 0) {
             fprintf (stderr, "could not init the reassembler: %s\n", filename.c_str ());
@@ -376,7 +376,8 @@ namespace IHMC_MISC_TEST
             const unsigned int uiNChunksToReassembleTmp = (uiNChunksToReassemble == 0 ? 1 : uiNChunksToReassemble);
             for (unsigned int i = 0; (pFragment != NULL) && (i < uiNChunksToReassembleTmp); pFragment = pFragments->getNext (), i++) {
                 void *pChunkBuf = toBuf (*pFragment->pReader, pFragment->ui64FragLen);
-                if (reassembler.incorporateChunk (pChunkBuf, pFragment->ui64FragLen, pFragment->out_type, pFragment->ui8Part) < 0) {
+                Chunker::Type chunkerType = MimeUtils::mimeTypeToFragmentType (pFragment->out_type);
+                if (reassembler.incorporateChunk (pChunkBuf, pFragment->ui64FragLen, chunkerType, pFragment->ui8Part) < 0) {
                     fprintf (stderr, "could not reasemble: %s. Adding chunk %d failed.\n",
                              filename.c_str(), static_cast<int>(pFragment->ui8Part));
                     free (pChunkBuf);
@@ -384,13 +385,14 @@ namespace IHMC_MISC_TEST
                 }
                 free (pChunkBuf);
             }
-            BufferReader *pReassembledAndAnnotatedObj = reassembler.getReassembledObject (outType, 100);
-            toFile (pReassembledAndAnnotatedObj, file, filename, outType, srcChecksum, uiNChunksToReassembleTmp, usNChunks, false);
+            Chunker::Type chunkerType = MimeUtils::mimeTypeToFragmentType (outType);
+            BufferReader *pReassembledAndAnnotatedObj = reassembler.getReassembledObject (chunkerType, 100);
+            toFile (pReassembledAndAnnotatedObj, file, filename, chunkerType, srcChecksum, uiNChunksToReassembleTmp, usNChunks, false);
             delete pReassembledAndAnnotatedObj;
             if (annotation.pFragment != NULL) {
-                reassembler.incorporateAnnotation (annotation.ppIntervals, pAnnBuf, ui64AnnLen, annotation.pFragment->out_type);
-                pReassembledAndAnnotatedObj = reassembler.getAnnotatedObject (outType, 100);
-                toFile (pReassembledAndAnnotatedObj, file, filename, outType, srcChecksum, uiNChunksToReassembleTmp, usNChunks, true);
+                reassembler.incorporateAnnotation (annotation.ppIntervals, pAnnBuf, ui64AnnLen, MimeUtils::mimeTypeToFragmentType (annotation.pFragment->out_type));
+                pReassembledAndAnnotatedObj = reassembler.getAnnotatedObject (chunkerType, 100);
+                toFile (pReassembledAndAnnotatedObj, file, filename, chunkerType, srcChecksum, uiNChunksToReassembleTmp, usNChunks, true);
             }
         }
 

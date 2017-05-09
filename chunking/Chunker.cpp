@@ -23,15 +23,11 @@
 #include "ChunkingUtils.h"
 #include "BMPHandler.h"
 #include "Defs.h"
-#ifdef WIN32
-    #include "FFmpegHandler.h"
-#endif
 #include "ImageCodec.h"
 #include "MPEG1Handler.h"
 #include "VideoCodec.h"
 
 #include "BMPImage.h"
-#include "FFMPEGReader.h"
 
 #include "BufferReader.h"
 #include "FileUtils.h"
@@ -117,22 +113,7 @@ Fragments * Chunker::fragmentFile (const char *pszFileName, Type inputObjectType
             delete pParser;
         }
         else {
-#ifdef WIN32
-            FFMPEGReader reader;
-            if (reader.openFile (pszFileName) < 0) {
-                return NULL;
-            }
-            for (uint8 ui8CurrentChunk = 1; ui8CurrentChunk <= ui8NoOfChunks; ui8CurrentChunk++) {
-                Reader *pReader = FFmpegChunker::fragmentFFmpeg (&reader, ui8CurrentChunk, ui8NoOfChunks);
-                if (pReader == NULL) {
-                    delete pFragments;
-                    return NULL;
-                }
-                pFragments->append (toFragment (pReader, inputObjectType, ui8CurrentChunk, ui8NoOfChunks, outputChunkType));
-            }
-#else
             return NULL;
-#endif
         }
     }
     if (pFragments->getFirst() == NULL) {
@@ -231,19 +212,7 @@ Chunker::Fragment * Chunker::extractFromFile (const char *pszFileName, Type inpu
             }
         }
 
-        #ifdef WIN32
-        FFMPEGReader reader;
-        if (reader.openFile (pszFileName) < 0) {
-            return NULL;
-        }
-        Reader *pReader = FFmpegChunker::extractFromFFmpeg (&reader, i64StartT, i64EndT);
-        if (pReader == NULL) {
-            return NULL;
-        }  
-        return toFragment (pReader, inputObjectType, 1, 1, outputChunkType);
-        #else
         return NULL;
-        #endif
     }
 
     return NULL;
