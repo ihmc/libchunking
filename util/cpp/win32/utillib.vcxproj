@@ -410,6 +410,7 @@
     <ClCompile Include="..\AVList.cpp" />
     <ClCompile Include="..\Base64.cpp" />
     <ClCompile Include="..\BufferedWriter.cpp" />
+    <ClCompile Include="..\BufferReader.cpp" />
     <ClCompile Include="..\BufferWriter.cpp" />
     <ClCompile Include="..\ConditionVariable.cpp" />
     <ClCompile Include="..\ConfigManager.cpp" />
