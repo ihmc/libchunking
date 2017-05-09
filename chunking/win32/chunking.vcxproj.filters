@@ -57,9 +57,6 @@
     <ClInclude Include="..\VideoCodec.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\FFmpegHandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\MPEG1Handler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -105,9 +102,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\ImageCodec.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\FFmpegHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\VideoCodec.cpp">
