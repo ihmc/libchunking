@@ -28,9 +28,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\BMPImage.cpp" />
-    <ClCompile Include="..\FFMPEGReader.cpp" />
-    <ClCompile Include="..\FFMPEGUtil.cpp" />
-    <ClCompile Include="..\FFMPEGWriter.cpp" />
     <ClCompile Include="..\MPEG1Parser.cpp" />
     <ClCompile Include="..\MPEGElements.cpp" />
     <ClCompile Include="..\PPMImage.cpp" />
@@ -38,18 +35,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\BMPImage.h" />
-    <ClInclude Include="..\FFMPEGReader.h" />
-    <ClInclude Include="..\FFMPEGUtil.h" />
-    <ClInclude Include="..\FFMPEGWriter.h" />
     <ClInclude Include="..\MPEG1Parser.h" />
     <ClInclude Include="..\MPEGElements.h" />
     <ClInclude Include="..\PPMImage.h" />
     <ClInclude Include="..\RGBImage.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\util\cpp\win32\utillib.vcxproj">
-      <Project>{8b739421-e28c-4fc1-b6ed-26d635617f7b}</Project>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{4F114CB8-2192-4013-89CC-782781D88EC2}</ProjectGuid>
@@ -130,7 +119,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;LITTLE_ENDIAN_SYSTEM;_CRT_SECURE_NO_DEPRECATE;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\;..\..\..\..\util\cpp;..\..\..\..\externals\dali-1.0\include;..\..\..\..\externals\include\ffmpeg;..\..\..\..\externals\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\;..\..\util\cpp;..\..\externals\dali-1.0\include;..\..\externals\include\ffmpeg;..\..\externals\include</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
@@ -145,7 +134,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;LITTLE_ENDIAN_SYSTEM;_CRT_SECURE_NO_DEPRECATE;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\;..\..\..\..\util\cpp;..\..\..\..\externals\dali-1.0\include;..\..\..\..\externals\include\ffmpeg;..\..\..\..\externals\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\;..\..\util\cpp;..\..\externals\dali-1.0\include;..\..\externals\include\ffmpeg;..\..\externals\include</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
@@ -164,7 +153,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>..\;..\..\..\..\util\cpp;..\..\..\..\externals\dali-1.0\include;..\..\..\..\externals\include\ffmpeg;..\..\..\..\externals\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\;..\..\util\cpp;..\..\externals\dali-1.0\include;..\..\externals\include\ffmpeg;..\..\externals\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -183,7 +172,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalIncludeDirectories>..\;..\..\..\..\util\cpp;..\..\..\..\externals\dali-1.0\include;..\..\..\..\externals\include\ffmpeg;..\..\..\..\externals\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\;..\..\util\cpp;..\..\externals\dali-1.0\include;..\..\externals\include\ffmpeg;..\..\externals\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

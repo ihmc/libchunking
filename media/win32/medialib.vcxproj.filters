@@ -18,15 +18,6 @@
     <ClCompile Include="..\BMPImage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\FFMPEGReader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\FFMPEGUtil.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\FFMPEGWriter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\PPMImage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -42,15 +33,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\BMPImage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\FFMPEGReader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\FFMPEGUtil.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\FFMPEGWriter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\PPMImage.h">
