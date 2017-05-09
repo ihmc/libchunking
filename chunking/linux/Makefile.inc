@@ -3,7 +3,7 @@
 # author: Giacomo Benincasa	(gbenincasa@ihmc.us)
 #
 
-NOMADS_HOME = ../../../..
+NOMADS_HOME = ../..
 UTIL_HOME = $(NOMADS_HOME)/util
 EXTERNALS_LIB=$(NOMADS_HOME)/externals/lib/linux-x86
 JPEG_HOME=$(NOMADS_HOME)/externals/libjpeg
