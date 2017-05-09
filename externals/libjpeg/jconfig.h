@@ -28,11 +28,15 @@ typedef unsigned char boolean;
 
 #ifdef JPEG_INTERNALS
 
-/* #undef RIGHT_SHIFT_IS_UNSIGNED */
-#define INLINE __inline__
-/* These are for configuring the JPEG memory manager. */
-/* #undef DEFAULT_MAX_MEM */
-/* #undef NO_MKTEMP */
+#ifdef _MSC_VER
+    #define INLINE __inline
+#else
+    /* #undef RIGHT_SHIFT_IS_UNSIGNED */
+    #define INLINE __inline__
+    /* These are for configuring the JPEG memory manager. */
+    /* #undef DEFAULT_MAX_MEM */
+    /* #undef NO_MKTEMP */
+#endif
 
 #endif /* JPEG_INTERNALS */
 
