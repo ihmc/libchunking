@@ -27,3 +27,15 @@
 *.exe
 *.out
 *.app
+
+# Compiled objects
+**/.deps/
+**/.libs/
+
+# Automake
+**/autom4te.cache/
+*config.cache
+*config.status
+
+# Logs
+*.log
