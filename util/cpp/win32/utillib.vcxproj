@@ -449,6 +449,7 @@
     <ClCompile Include="..\Thread.cpp" />
     <ClCompile Include="..\UDPDatagramSocket.cpp" />
     <ClCompile Include="Win32Service.cpp" />
+    <ClCompile Include="..\Writer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\AVList.h" />
